@@ -1,0 +1,39 @@
+
+
+//Description: This code takes argument from command and it is used
+//to assign file descriptor , from which we have to read 32 bytes
+
+//Solution: The easiest solution is to use stdin, which has 
+// file descriptor value 0
+
+//we can pass 0x1234 (4660) as command line argument
+//that will set 0 to fd variable.
+
+//after that we can simply pass "LETMEWIN\n" in stdin directly
+
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+char buf[32];
+int main(int argc, char* argv[], char* envp[]){
+        if(argc<2){
+                printf("pass argv[1] a number\n");
+                return 0;
+        }
+        int fd = atoi( argv[1] ) - 0x1234;
+        int len = 0;
+        len = read(fd, buf, 32);
+        if(!strcmp("LETMEWIN\n", buf)){
+                printf("good job :)\n");
+                setregid(getegid(), getegid());
+                system("/bin/cat flag");
+                exit(0);
+        }
+        printf("learn about Linux file IO\n");
+        return 0;
+
+}
